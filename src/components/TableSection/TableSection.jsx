@@ -1,14 +1,16 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import './TableSection.css';
 import { Cascader, Layout, Table, Input, InputNumber, Form, Typography, Button, Popconfirm,  Row, Col} from 'antd';
-import reqwest from 'reqwest';
 import { Tabs, Radio  } from 'antd';
 import { DownloadOutlined, PlusSquareOutlined, PlusOutlined, UploadOutlined} from '@ant-design/icons';
 
+
+function TableSection(){
 const { TabPane } = Tabs;
 const { Search } = Input;
 
 //expandedrowrender
+/*
 const expandedRowRender = () =>{
   const columneExpanded = [
     { title: 'Date', dataIndex: 'date', key: 'data'},
@@ -19,8 +21,69 @@ const expandedRowRender = () =>{
   ]
   return <Table columns={columneExpanded} dataSource={dataExpanded} pagination={false} />;
 }
-
+*/
 //table
+
+
+const [dataSource, setDataSource] = useState([
+  {
+     key: '1',
+     division: 'CEO',
+     divisionSuperior: 'Direccion general',
+     colab: 1,
+     nivel: '1',
+     subdivisiones: 1,
+     embajadores: 'Jordyn Herwitz'
+   },
+   {
+     key: '2',
+     division: 'Strategy',
+     divisionSuperior: 'Direccion general',
+     colab: 3,
+     nivel: '4',
+     subdivisiones: 1,
+     embajadores: 'Kierra Rosser'
+   },
+   {
+     key: '3',
+     division: 'Growth',
+     divisionSuperior: 'Direccion general',
+     colab: 3,
+     nivel: '2',
+     subdivisiones: 1,
+     embajadores: '-'
+   },
+   {
+     key: '4',
+     division: 'Strategy',
+     divisionSuperior: 'Producto',
+     colab: 6,
+     nivel: '1',
+     subdivisiones: 4,
+     embajadores: '-'
+   },
+   {
+     key: '5',
+     division: 'Growth',
+     divisionSuperior: 'Operaciones',
+     colab: 8,
+     nivel: '5',
+     subdivisiones: 4,
+     embajadores: '-'
+   },
+   {
+     key: '6',
+     division: 'CEO',
+     divisionSuperior: 'Operaciones',
+     colab: 2,
+     nivel: '1',
+     subdivisiones: 1,
+     embajadores: 'Terry Press'
+   },
+
+
+]);
+
 const columns = [
   {
     title: 'Division',
@@ -39,10 +102,14 @@ const columns = [
         text: 'Producto',
         value: 'Producto',
       },
+      {
+        text: 'Growth',
+        value: 'Growth',
+      },
     ],
     filterMode: 'tree',
     filterSearch: true,
-    onFilter: (value, record) => record.dataIndex.includes(value),
+    onFilter: (value, record) => record.division.includes(value),
     width: '20%',
   },
   {
@@ -51,8 +118,8 @@ const columns = [
     sorter: (a, b) => a.divisionSuperior - b.divisionSuperior,
     filters: [
       {
-        text: 'CEO',
-        value: 'CEO',
+        text: 'Direccion general',
+        value: 'Direccion general',
       },
       {
         text: 'Strategy',
@@ -62,10 +129,14 @@ const columns = [
         text: 'Producto',
         value: 'Producto',
       },
+      {
+        text: 'Operaciones',
+        value: 'Operaciones',
+      },
     ],
     filterMode: 'tree',
     filterSearch: true,
-    onFilter: (value, record) => record.dataIndex.includes(value),
+    onFilter: (value, record) => record.divisionSuperior.includes(value),
     width: '20%',
   },
   {
@@ -79,21 +150,26 @@ const columns = [
     sorter: (a, b) => a.nivel - b.nivel,
     filters: [
       {
-        text: 'CEO',
-        value: 'CEO',
+        text: '1',
+        value: '1',
       },
       {
-        text: 'Strategy',
-        value: 'Strategy',
+        text: '2',
+        value: '2',
       },
       {
-        text: 'Producto',
-        value: 'Producto',
+        text: '4',
+        value: '4',
       },
+      {
+        text: '5',
+        value: '5',
+      },
+      
     ],
     filterMode: 'tree',
     filterSearch: true,
-    onFilter: (value, record) => record.dataIndex.includes(value),
+    onFilter: (value, record) => record.nivel.includes(value),
     width: '10%',
   },
   {
@@ -106,29 +182,6 @@ const columns = [
     dataIndex: 'embajadores'
   },
 ];
-
-const dataSource = [
- {
-    key: '1',
-    division: 'CEO',
-    divisionSuperior: 'Direccion general',
-    colab: 1,
-    nivel: 1,
-    subdivisiones: 1 + <expandedRowRender/>,
-    embajadores: 'Jordyn Herwitz'
-  },
-  {
-    key: '2',
-    division: 'Strategy',
-    divisionSuperior: 'Direccion general',
-    colab: 3,
-    nivel: 4,
-    subdivisiones: 1,
-    embajadores: 'Kierra Rosser'
-  }
-];
-
-
 
 function onChange(pagination, filters, sorter, extra) {
   console.log('params', pagination, filters, sorter, extra);
@@ -164,7 +217,7 @@ const TableSection1 = () => (
           <Search placeholder="Buscar" allowClear onSearch={onSearch} style={{ width: 200 , marginTop:5,marginLeft:10}} />
         </Col>
       </Row> 
-      <Table bordered columns={columns} dataSource={dataSource} onChange={onChange} rowSelection={true} expandable={{expandedRowRender}} />
+      <Table bordered columns={columns} dataSource={dataSource} onChange={onChange} rowSelection={true} />
     </div>
     </TabPane>
     <TabPane tab="Colaboradores" key="2">
@@ -173,7 +226,6 @@ const TableSection1 = () => (
   </Tabs>
 );
 
-function TableSection(){
     return(
         <>
           <Row style={{marginTop: 30, fontWeight:500, fontSize:17}}>
